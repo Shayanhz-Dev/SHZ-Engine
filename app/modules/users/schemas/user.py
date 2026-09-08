@@ -11,5 +11,11 @@ class UserResponse(BaseModel):
     full_name: str
     avatar_url: str | None
     is_active: bool
-    
 
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str
+
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str
