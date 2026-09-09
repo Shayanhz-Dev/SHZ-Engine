@@ -9,7 +9,7 @@ import jwt
 from app.db.session import get_db
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/users/login")
 
-def get_user_service(session: Session) -> UserService:
+def get_user_service(session: Session = Depends(get_db)) -> UserService:
     user_repository = UserRepository(session)
     password_service = PasswordService()
     token_service = TokenService()
