@@ -7,7 +7,7 @@ class TokenService:
 
     def create_token(self, user_id: int) -> str:
         expire = datetime.now(timezone.utc) + timedelta(
-            minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
+            minutes=settings.access_token_expire_minutes
         )
 
         payload = {
@@ -16,8 +16,8 @@ class TokenService:
             }
         token = jwt.encode(
             payload,
-            settings.SECRET_KEY,
-            algorithm=settings.ALGORITHM
+            settings.secret_key,
+            algorithm=settings.algorithm
         )
 
         return token
@@ -25,8 +25,8 @@ class TokenService:
     def verify_token(self, token: str) -> dict:
         payload = jwt.decode(
             token,
-            settings.SECRET_KEY,
-            algorithms=[settings.ALGORITHM]
+            settings.secret_key,
+            algorithms=[settings.algorithm]
         )
 
         return payload
