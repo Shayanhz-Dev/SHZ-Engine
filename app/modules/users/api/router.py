@@ -29,7 +29,7 @@ def register(
         return user
     
     except ValueError as error:
-        raise HTTPException(status_code=400, detail=str(error))
+        raise HTTPException(status.HTTP_409_CONFLICT, detail=str(error))
 
 @router.post(
         "/login",
