@@ -7,6 +7,7 @@ from app.modules.users.service.token_service import TokenService
 from fastapi import Depends, status, HTTPException
 import jwt
 from app.db.session import get_db
+from app.modules.users.models.user import User
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/users/login")
 
 def get_user_service(session: Session = Depends(get_db)) -> UserService:
@@ -54,3 +55,13 @@ def get_current_user(
         )
 
     return user
+
+def require_admin(
+        current_user = Depends(get_current_user),
+) -> User:
+    if current_user.role != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin privileges required",
+        )
+    return current_user
