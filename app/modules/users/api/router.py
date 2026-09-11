@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app.modules.users.api.dependencies import get_user_service , get_current_user
+from app.modules.users.api.dependencies import get_user_service , get_current_user, require_admin
 from app.modules.users.service.user_service import UserService
 from app.modules.users.schemas.user import RegisterRequest, UserResponse, TokenResponse, LoginRequest
 from app.modules.users.models.user import User
@@ -62,3 +62,12 @@ def get_me(
     current_user: User = Depends(get_current_user),
 ):
     return current_user
+
+@router.get(
+    "/admin-test",
+)
+def admin_test(
+    current_user: User = Depends(require_admin),
+):
+    return { "message": "Welcome, admin!",
+            "user_id": current_user.id,}
